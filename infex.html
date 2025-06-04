@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tank Drive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen space-y-6">
+  <h1 class="text-3xl font-bold">Tank Drive Control</h1>
+
+  <div class="space-y-4">
+    <button onclick="send('forward')" class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl text-xl">Forward</button>
+    <div class="space-x-4">
+      <button onclick="send('left')" class="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-xl text-xl">Left</button>
+      <button onclick="send('stop')" class="bg-red-500 hover:bg-red-600 px-6 py-3 rounded-xl text-xl">Stop</button>
+      <button onclick="send('right')" class="bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-xl text-xl">Right</button>
+    </div>
+    <button onclick="send('backward')" class="bg-purple-500 hover:bg-purple-600 px-6 py-3 rounded-xl text-xl">Backward</button>
+  </div>
+
+  <p id="status" class="text-lg mt-4">Status: Idle</p>
+
+  <script>
+    const ws = new WebSocket("ws://" + location.host + "/ws");
+
+    function send(cmd) {
+      ws.send(cmd);
+    }
+
+    ws.onmessage = (e) => {
+      document.getElementById("status").textContent = "Status: " + e.data;
+    }
+  </script>
+</body>
+</html>
